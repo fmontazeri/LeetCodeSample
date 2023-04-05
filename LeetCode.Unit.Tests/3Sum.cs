@@ -11,6 +11,8 @@ public class ThreeSum
     public void SumNumbersInArray(int[] input, int count)
     {
         var result = new List<IList<int>>();
+
+        Array.Sort(input);
         for (var current = 0; current <= input.Length - 1; current++)
         {
             for (var next = 0; next <= input.Length - 1; next++)
@@ -28,7 +30,9 @@ public class ThreeSum
                 // }
 
                 var comparer = new ArrayListComparer();
-                if (!result.Any(item => comparer.Equals(item, newItem))) // item[0] == newItem[0] && item[1] == newItem[1] && item[2] == newItem[2]))
+                if (!result.Any(item =>
+                        comparer.Equals(item,
+                            newItem))) // item[0] == newItem[0] && item[1] == newItem[1] && item[2] == newItem[2]))
                 {
                     result.Add(newItem);
                 }
@@ -52,6 +56,50 @@ public class ThreeSum
         }
 
         return -1;
+    }
+
+
+    [Theory]
+    //[InlineData(new[] { 1, -1, 0 , -1 }, 1)]
+    //[InlineData(new[] { 0, 1, 1 }, 0)]
+    //[InlineData(new[] { -1, 0, 1, 2, -1, -4 }, 2)]
+    [InlineData(new[] { -1, 0, 1, 2, -1, -4, -2, -3, 3, 0, 4 }, 9)]
+    public void SumNumbersInArrayWithTwoPointers(int[] input, int count)
+    {
+        var result = new List<IList<int>>();
+        Array.Sort(input);
+        var n = input.Length;
+        for (var i = 0; i < count; i++)
+        {
+            if (i > 0 && input[i - 1] == input[i]) continue;
+            var left = i + 1;
+            var right =  n - 1;
+
+            while (left < right)
+            {
+                var sum = input[i] + input[left] + input[right];
+                if (sum == 0)
+                {
+                    result.Add(new List<int>() { input[i], input[left], input[right] });
+
+                    while (left < right && input[left] == input[left + 1]) left++;
+                    while (left < right && input[right] == input[right - 1]) right--;
+
+                    left++;
+                    right--;
+                }
+                else if (sum < 0)
+                {
+                    left++;
+                }
+                else
+                {
+                    right--;
+                }
+            }
+        }
+
+        result.Count().Should().Be(count);
     }
 }
 
