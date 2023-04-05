@@ -60,18 +60,19 @@ public class ThreeSum
 
 
     [Theory]
-    //[InlineData(new[] { 1, -1, 0 , -1 }, 1)]
-    //[InlineData(new[] { 0, 1, 1 }, 0)]
-    //[InlineData(new[] { -1, 0, 1, 2, -1, -4 }, 2)]
+    [InlineData(new[] { 1, -1, 0 , -1 }, 1)]
+    [InlineData(new[] { 0, 1, 1 }, 0)]
+    [InlineData(new[] { -1, 0, 1, 2, -1, -4 }, 2)]
     [InlineData(new[] { -1, 0, 1, 2, -1, -4, -2, -3, 3, 0, 4 }, 9)]
     public void SumNumbersInArrayWithTwoPointers(int[] input, int count)
     {
         var result = new List<IList<int>>();
         Array.Sort(input);
         var n = input.Length;
-        for (var i = 0; i < count; i++)
+        for (var i = 0; i < n; i++)
         {
             if (i > 0 && input[i - 1] == input[i]) continue;
+            
             var left = i + 1;
             var right =  n - 1;
 
